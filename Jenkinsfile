@@ -1,23 +1,29 @@
 pipeline {
     agent any
 
+    tools {
+        sonarQube 'SonarScanner'
+    }
+
     stages {
 
         stage('Checkout') {
             steps {
-                echo 'Repository checked out successfully.'
+                checkout scm
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'sonar-scanner'
+                }
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building application...'
-            }
-        }
-
-        stage('Success') {
-            steps {
-                echo 'Enterprise CI/CD Pipeline Started Successfully!'
+                echo 'Build Successful'
             }
         }
     }
