@@ -1,37 +1,3 @@
-pipeline {
-    agent any
-
-    environment {
-        IMAGE_NAME = "aswinvtk97/enterprise-cicd-app"
-        IMAGE_TAG = "${BUILD_NUMBER}"
-    }
-
-    stages {
-
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    def scannerHome = tool 'SonarQube Scanner'
-
-                    withSonarQubeEnv('SonarQube') {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
-            }
-        }
-
         stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(
@@ -48,15 +14,16 @@ pipeline {
                 }
             }
         }
-    }
 
-    post {
-        success {
-            echo "Pipeline completed successfully."
-        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                    kubectl set image deployment/enterprise-cicd-app \
+                    enterprise-cicd-app=${IMAGE_NAME}:${IMAGE_TAG} \
+                    -n enterprise-cicd
 
-        failure {
-            echo "Pipeline failed."
+                    kubectl rollout status deployment/enterprise-cicd-app \
+                    -n enterprise-cicd
+                '''
+            }
         }
-    }
-}
