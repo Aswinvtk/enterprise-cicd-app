@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: enterprise-config
+  namespace: enterprise-cicd
+
+data:
+  APP_NAME: "Enterprise CI/CD Platform"
+  APP_ENV: "Production"
+  COMPANY_NAME: "ABC Software Company"
