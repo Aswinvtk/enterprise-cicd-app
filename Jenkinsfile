@@ -24,6 +24,14 @@ pipeline {
                     }
                 }
             }
+        }       
+	
+	 stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
         }
 
         stage('Build Docker Image') {
@@ -48,18 +56,24 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                sh '''
-                    kubectl set image deployment/enterprise-cicd-app \
-                    enterprise-cicd-app=${IMAGE_NAME}:${IMAGE_TAG} \
-                    -n enterprise-cicd
+stage('Deploy to Kubernetes') {
+    steps {
+        sh '''
+            kubectl apply -f kubernetes/configmap.yaml
+            kubectl apply -f kubernetes/secret.yaml
+            kubectl apply -f kubernetes/service.yaml
+            kubectl apply -f kubernetes/deployment.yaml
 
-                    kubectl rollout status deployment/enterprise-cicd-app \
-                    -n enterprise-cicd
-                '''
-            }
-        }
+            kubectl set image deployment/enterprise-cicd-app \
+            enterprise-cicd-app=${IMAGE_NAME}:${IMAGE_TAG} \
+            -n enterprise-cicd
+
+            kubectl rollout status deployment/enterprise-cicd-app \
+            -n enterprise-cicd
+        '''
+    }
+}
+
     }
 
     post {
