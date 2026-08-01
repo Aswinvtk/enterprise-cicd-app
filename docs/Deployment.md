@@ -73,7 +73,7 @@ Add the following credentials in the Jenkins Dashboard under **Manage Jenkins** 
 - Go to **Manage Jenkins** -> **System**.
 - Under **SonarQube servers**, click **Add SonarQube**.
 - Name: `SonarQube` (matching the `Jenkinsfile` reference).
-- Server URL: Your SonarQube instance URL (e.g., `http://10.0.0.X:9000`).
+- Server URL: Your SonarQube instance URL (e.g., `http://13.126.62.92:9000` or your configured host).
 - Server authentication token: Select the `sonarqube-token` secret text created earlier.
 
 ---
@@ -98,8 +98,9 @@ Before running the pipeline, set up the namespace on the target Kubernetes clust
 ## Running the Pipeline
 
 1. **Create Jenkins Job**:
+   - Open your Jenkins Dashboard at `http://13.126.62.92:8080`.
    - Click **New Item** on Jenkins Home.
-   - Select **Pipeline** and name it `enterprise-cicd-pipeline`.
+   - Select **Pipeline** and name it `Enterprise-CICD`.
 2. **Define SCM Source**:
    - In the job configuration under **Pipeline**, select **Pipeline script from SCM**.
    - SCM: **Git**

@@ -111,31 +111,19 @@ Follow our step-by-step [Deployment Guide](docs/Deployment.md) to set up Jenkins
 
 ## Screenshots and Dashboards
 
-Below are mockup visualizations representing different stages and panels of the automated pipeline and infrastructure.
+Below are the actual screenshots captured during the pipeline execution and server configuration.
 
-### 1. GitHub Code Repository & Webhooks
-*Mock visualization of the GitHub repository interface after pushing updates and triggering webhooks.*
-![GitHub Mockup](screenshots/github.png)
+### 1. Code Commit & Git Operations
+*Terminal log on the Jenkins build runner staging files, checking status, and pushing code releases to the GitHub repository.*
+![Git Push Terminal](screenshots/github.png)
 
-### 2. Jenkins CI/CD Dashboard
-*Mock visualization of the pipeline status panel showing the multi-stage build success status.*
+### 2. Jenkins Dashboard & Trends
+*The Jenkins controller dashboard showing build trends and pipeline editor terminal.*
 ![Jenkins Dashboard](screenshots/jenkins-dashboard.png)
 
-### 3. Automated Stage Pipeline View
-*Stage-by-stage runtime breakdown showing code checking, analysis, container compilation, registry pushing, and cluster updating.*
-![Pipeline View](screenshots/pipeline.png)
-
-### 4. SonarQube Code Quality Analysis
-*Mock visualization showing the passed static code check with zero bugs, zero security vulnerabilities, and no duplication.*
-![SonarQube Mockup](screenshots/sonarqube.png)
-
-### 5. Docker Hub Registry
-*Mock visualization of the container registry page containing tagged build releases.*
-![Docker Hub Mockup](screenshots/dockerhub.png)
-
-### 6. Kubernetes Cluster Workloads
-*Mock visualization of EKS workloads showing running replicas and load balancer configuration.*
-![Kubernetes Status](screenshots/kubernetes.png)
+### 3. CI/CD Stage Pipeline & Quality Gate Status
+*Successful execution of all pipeline stages (Checkout, SonarQube Analysis, Docker Build & Push, Kubernetes Deploy) along with the green 'Passed' SonarQube Quality Gate verification.*
+![Jenkins Pipeline and SonarQube](screenshots/pipeline.png)
 
 ---
 
