@@ -42,7 +42,7 @@ For a detailed breakdown of the network topology, security groups, subnets, and 
 - **Containerization**: Docker (Multi-stage build context)
 - **Orchestration**: Kubernetes (Amazon EKS)
 - **Local Sandbox**: Docker Compose
-- **Runtime Environment**: Node.js, Express, HTML5, CSS3, Vanilla JS
+- **Runtime Environment**: Node.js, Express, HTML5, CSS3
 
 ---
 
@@ -127,26 +127,4 @@ Below are the actual screenshots captured during the pipeline execution and serv
 
 ---
 
-## Project Roadmap
 
-- [x] Jenkins Declarative Pipeline Integration
-- [x] SonarQube Quality Gates & Static Code Scanner
-- [x] Docker Containerization & Hub Publishing
-- [x] Kubernetes Namespace, ConfigMap & Secret separation
-- [x] Zero-Downtime Rolling Update Strategy
-- [ ] Trivy Container Security Vulnerability Scanning
-- [ ] Helm Chart packaging for Kubernetes manifests
-- [ ] Nginx Ingress Controller deployment for routing mapping
-- [ ] ArgoCD GitOps Git-to-Cluster Synchronization
-- [ ] Prometheus Resource Metric Monitoring
-- [ ] Grafana DevOps Dashboard Visualization
-
----
-
-## Future Enhancements & Lessons Learned
-
-During active development on AWS, the cluster was shut down due to resource limitations (CPU/Memory overhead on EKS control planes) and cloud billing limits. This taught valuable lessons in cluster resource limits and instance sizing:
-- **Resource Constraints**: Realized the critical importance of defining strict container resource limits (`requests` and `limits`) to avoid node starvation.
-- **Monitoring Cost**: Spot instances and node auto-scaling are essential when running pipelines with heavy static-analysis servers.
-
-Read more structural lessons in [Lessons Learned Documentation](docs/Lessons-Learned.md).
