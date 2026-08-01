@@ -1,61 +1,91 @@
+# ==========================================
+# Deployment Configuration for Enterprise Web Application
+# ==========================================
 apiVersion: apps/v1
 kind: Deployment
 
 metadata:
   name: enterprise-cicd-app
   namespace: enterprise-cicd
+  labels:
+    app: enterprise-cicd-app
+    tier: backend
+    project: enterprise-cicd
 
 spec:
+  # Maintain high availability with multiple replicas
   replicas: 2
 
+  # Rolling Update Strategy to ensure zero-downtime deployments
   strategy:
     type: RollingUpdate
     rollingUpdate:
+      # Max number of pods that can be unavailable during update
       maxUnavailable: 1
+      # Max number of pods that can be created above the desired number of pods
       maxSurge: 1
 
+  # Label selector used to identify pods managed by this deployment
   selector:
     matchLabels:
       app: enterprise-cicd-app
 
+  # Pod template specifications
   template:
     metadata:
       labels:
         app: enterprise-cicd-app
+        tier: backend
+        project: enterprise-cicd
 
     spec:
       containers:
       - name: enterprise-cicd-app
-
+        # Container image pulled from Docker Hub (updated dynamically in the CI/CD pipeline)
         image: aswinvtk97/enterprise-cicd-app:initial
+        
+        # Pull policy for development; overridden in production
+        imagePullPolicy: IfNotPresent
 
+        # Exposed port of the node application
         ports:
         - containerPort: 3000
+          name: http
 
+        # Resource allocation to ensure application performance and cluster stability
         resources:
           requests:
-            cpu: "100m"
-            memory: "128Mi"
+            cpu: "100m"      # Minimal CPU reserved (100 millicores)
+            memory: "128Mi"  # Minimal memory reserved
           limits:
-            cpu: "500m"
-            memory: "512Mi"
+            cpu: "500m"      # Maximum CPU allowed before throttling
+            memory: "512Mi"  # Maximum memory allowed before pod eviction (OOMKilled)
 
+        # Inject environment settings from ConfigMap and Secret configs
         envFrom:
         - configMapRef:
             name: enterprise-config
         - secretRef:
             name: enterprise-secret
 
+        # Readiness Probe: Determines if the container is ready to accept traffic
         readinessProbe:
           httpGet:
             path: /health
             port: 3000
-          initialDelaySeconds: 10
-          periodSeconds: 5
+          initialDelaySeconds: 10 # Delay before first check
+          periodSeconds: 5        # How often to perform check
+          timeoutSeconds: 2       # Timeout for each check
+          successThreshold: 1
+          failureThreshold: 3
 
+        # Liveness Probe: Determines if the container needs to be restarted
         livenessProbe:
           httpGet:
             path: /health
             port: 3000
-          initialDelaySeconds: 20
-          periodSeconds: 10
+          initialDelaySeconds: 20 # Give app enough time to initialize
+          periodSeconds: 10       # How often to perform check
+          timeoutSeconds: 2       # Timeout for each check
+          successThreshold: 1
+          failureThreshold: 3

@@ -1,15 +1,30 @@
+# ==========================================
+# Service Configuration for Enterprise Web Application
+# ==========================================
 apiVersion: v1
 kind: Service
+
 metadata:
   name: enterprise-cicd-service
   namespace: enterprise-cicd
+  labels:
+    app: enterprise-cicd-app
+    project: enterprise-cicd
 
 spec:
+  # Selector links the Service to Pods matching this label
   selector:
     app: enterprise-cicd-app
 
   ports:
-  - port: 80
+  - name: http
+    # The port exposed inside the cluster
+    port: 80
+    # The port the container is listening on
     targetPort: 3000
+    # NodePort allows external access when using VM/EC2 hosts directly
+    # In cloud environments, type: LoadBalancer or using Ingress is preferred
+    nodePort: 30080
 
+  # NodePort allows direct access on each Kubernetes node's IP at port 30080
   type: NodePort
