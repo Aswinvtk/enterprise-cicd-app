@@ -1,27 +1,61 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Enterprise CI/CD Platform</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise DevOps Control Center</title>
+    <!-- Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<h1>Enterprise CI/CD Platform</h1>
+    <div class="glow-container">
+        <div class="glow-ball g1"></div>
+        <div class="glow-ball g2"></div>
+    </div>
 
-<h2>DevOps Capstone Project</h2>
+    <div class="container">
+        <header>
+            <div class="badge">ENVIRONMENT: PRODUCTION</div>
+            <h1>Enterprise CI/CD Platform</h1>
+            <p class="subtitle">Three-Tier Web Application Deploy Console</p>
+        </header>
 
-<p id="status">
-Application Running 22
-</p>
+        <main class="console-card">
+            <div class="card-header">
+                <div class="status-indicator">
+                    <span class="pulse-dot"></span>
+                    <span id="status">Syncing with backend API...</span>
+                </div>
+            </div>
+            
+            <div class="console-body">
+                <p class="description">
+                    This interface is the frontend node of the three-tier web application, designed for cloud infrastructure deployment monitoring and live configuration verification.
+                </p>
+                
+                <div class="actions">
+                    <button class="btn-primary" onclick="deploy()">
+                        <span class="btn-text">Trigger Rolling Release</span>
+                        <span class="btn-glow"></span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="meta-item">
+                    <span class="label">Cluster:</span>
+                    <span class="val">enterprise-eks</span>
+                </div>
+                <div class="meta-item">
+                    <span class="label">Namespace:</span>
+                    <span class="val">enterprise-cicd</span>
+                </div>
+            </div>
+        </main>
+    </div>
 
-<button onclick="deploy()">
-Deploy
-</button>
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
-
 </html>
