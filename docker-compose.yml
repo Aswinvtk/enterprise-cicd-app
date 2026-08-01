@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: enterprise-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - APP_NAME=Enterprise CI/CD Backend (Local)
+      - APP_ENV=Development
+      - COMPANY_NAME=ABC Software Company
+      - DB_USERNAME=dev_admin
+      - DB_PASSWORD=dev_password123
+      - JWT_SECRET=dev_jwt_secret_key
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - enterprise-network
+
+  frontend:
+    image: nginx:alpine
+    container_name: enterprise-frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - enterprise-network
+
+networks:
+  enterprise-network:
+    driver: bridge
